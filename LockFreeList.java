@@ -127,20 +127,52 @@ public class LockFreeList<T> {
             Random rand = new Random();
             rand.setSeed(System.currentTimeMillis() + rand.nextInt(50));
             // generate random number for choice
-            while(true){
-                int choice = rand.nextInt(3);
+            // while(true){
+            while(this.oldGifts.size() > 0){
+                int choice = rand.nextInt(9);
+                if(choice < 4){
+                    choice = 0;
+                }
+                else if(choice < 8){
+                    choice = 1;
+                }
+                else{
+                    choice = 2;
+                }
+            
                 switch (choice) {
                     // option 1 add
                     case 0:
-                        this.giftChain.add(this.oldGifts.remove(0));
+                        // if(this.oldGifts.size() > 0) {
+                        if(this.oldGifts != null) {
+                            int tempKey = this.oldGifts.remove(0);
+                            // this.giftChain.add(this.oldGifts.remove(0));
+                            this.giftChain.add(tempKey);
+                            // System.out.println("Added gift to gift chain.");
+                            System.out.println("Added gift with key: " + tempKey + " to gift chain and removed it from the old collection of gifts.");
+                        }
                         break;
                     // option 2 remove
                     case 1:
-                        this.giftChain.remove(/*insert logic*/);
+                        // if(this.giftChain.head.next != null) {
+                        
+                        Node tmp = (LockFreeList.Node) this.giftChain.head.next.getReference();
+                        if(tmp.key != Integer.MAX_VALUE && tmp.key != Integer.MIN_VALUE){
+                            int remKey = tmp.key;
+                            this.giftChain.remove(remKey);
+                            System.out.println("Removed gift with key: " + remKey + " from gift chain.");
+                        }
+                        // }
                         break;
-                    
+                        
                     // option 3 contains
-                    case 3:
+                    case 2:
+                        int ifContains = rand.nextInt(500000);
+                        if(this.giftChain.contains(ifContains)){
+                            System.out.println("Gift with key: " + ifContains + " was found in giftchain!");
+                        }
+                        System.out.println("Gift with key: " + ifContains + " was not found in giftchain.");
+                        
                         break;
             
                     default:
